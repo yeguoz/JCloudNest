@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
 
+import static icu.yeguo.cloudnest.constant.CommonConstant.SUCCESS;
 import static icu.yeguo.cloudnest.constant.HttpStatusConstant.OK;
 
 @NoArgsConstructor
@@ -26,7 +27,7 @@ public class Response<T> implements Serializable {
     }
 
     public static <T> Response<T> success(T data) {
-        return new Response<>(OK, data, "success");
+        return new Response<>(OK, data, SUCCESS);
     }
 
     public static <T> Response<T> error(int code, String message) {
