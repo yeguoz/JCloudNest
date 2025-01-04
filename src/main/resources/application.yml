@@ -6,6 +6,12 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/cloudnest?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
+  # redis
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
+      database: 0
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:
@@ -32,3 +38,11 @@ mybatis-plus:
       logic-delete-field: isDelete
       logic-not-delete-value: 0
       logic-delete-value: 1
+# 日志级别
+logging:
+  level:
+    root: info
+# server
+server:
+  servlet:
+    context-path: /api
