@@ -1,5 +1,6 @@
 package icu.yeguo.cloudnest.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import icu.yeguo.cloudnest.model.entity.Setting;
 import icu.yeguo.cloudnest.service.ISettingService;
@@ -14,6 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class SettingServiceImpl extends ServiceImpl<SettingMapper, Setting> implements ISettingService {
 
+    public String getSettingValue(String name) {
+        LambdaQueryWrapper<Setting> lambdaQueryWrapper = new LambdaQueryWrapper<Setting>().eq(Setting::getName, name);
+        Setting setting = this.getOne(lambdaQueryWrapper);
+        return setting.getValue();
+    }
 }
 
 
