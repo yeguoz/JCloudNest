@@ -7,7 +7,7 @@
     <resultMap id="BaseResultMap" type="icu.yeguo.cloudnest.model.entity.Setting">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="type" column="type" jdbcType="VARCHAR"/>
-        <result property="key" column="key" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="value" column="value" jdbcType="VARCHAR"/>
         <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
         <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
@@ -15,7 +15,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,type,key,
+        id,type,name,
         value,created_at,updated_at,
         is_deleted
     </sql>

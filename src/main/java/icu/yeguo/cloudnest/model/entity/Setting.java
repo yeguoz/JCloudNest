@@ -23,8 +23,8 @@ public class Setting implements Serializable {
     private Integer id;
     @TableField(value = "type")
     private String type;
-    @TableField(value = "key")
-    private String key;
+    @TableField(value = "name")
+    private String name;
     @TableField(value = "value")
     private String value;
     @TableField(value = "created_at")
