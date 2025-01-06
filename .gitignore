@@ -6,6 +6,7 @@ target/
 
 ### xcodeMap ###
 .xcodemap
+/src/main/resources/jwt_key.txt
 
 ### STS ###
 .apt_generated
