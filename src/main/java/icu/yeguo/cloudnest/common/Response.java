@@ -1,6 +1,5 @@
 package icu.yeguo.cloudnest.common;
 
-import icu.yeguo.cloudnest.constant.HttpStatusConstant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,7 +7,8 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import static icu.yeguo.cloudnest.constant.CommonConstant.SUCCESS;
-import static icu.yeguo.cloudnest.constant.HttpStatusConstant.OK;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.SC_OK;
 
 @NoArgsConstructor
 @Data
@@ -27,14 +27,14 @@ public class Response<T> implements Serializable {
     }
 
     public static <T> Response<T> success(T data) {
-        return new Response<>(OK, data, SUCCESS);
+        return new Response<>(SC_OK, data, SUCCESS);
     }
 
     public static <T> Response<T> error(int code, String message) {
-        return new Response<>(code,null, message);
+        return new Response<>(code, null, message);
     }
 
     public static <T> Response<T> error(String message) {
-        return new Response<>(HttpStatusConstant.InternalServerError,null, message);
+        return new Response<>(SC_INTERNAL_SERVER_ERROR, null, message);
     }
 }
