@@ -50,6 +50,7 @@ public class AuthFilter implements Filter {
                 writer.flush();
                 return;
             }
+            log.debug("身份验证通过...");
         }
         chain.doFilter(request, response);
     }
@@ -62,6 +63,7 @@ public class AuthFilter implements Filter {
         excludePaths.add("/api/webjars/**");
         // other
         excludePaths.add("/api/users");
+        excludePaths.add("/api/users/current");
         excludePaths.add("/api/users/auth/login");
         excludePaths.add("/api/users/captcha");
         excludePaths.add("/api/setting/auth");
