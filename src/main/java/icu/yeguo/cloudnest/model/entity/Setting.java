@@ -4,14 +4,11 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 
-/**
- * @TableName cn_setting
- */
-@TableName(value = "cn_setting")
+@TableName(value = "cn_settings")
 @Data
 public class Setting implements Serializable {
 
@@ -28,10 +25,10 @@ public class Setting implements Serializable {
     @TableField(value = "value")
     private String value;
     @TableField(value = "created_at")
-    private Date createdAt;
+    private LocalDateTime createdAt;
     @TableField(value = "updated_at")
-    private Date updatedAt;
-    @TableLogic
-    private Integer isDeleted;
+    private LocalDateTime updatedAt;
+    @TableLogic(value = "null", delval = "now()")
+    private LocalDateTime deletedAt;
 
 }

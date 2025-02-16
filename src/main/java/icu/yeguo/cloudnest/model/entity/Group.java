@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
  * @since 2024-12-31
  */
 @Data
-@TableName("cn_group")
+@TableName("cn_groups")
 public class Group implements Serializable {
     @Serial
     @TableField(exist=false)
@@ -36,7 +36,7 @@ public class Group implements Serializable {
     private LocalDateTime createdAt;
     @TableField(value = "updated_at")
     private LocalDateTime updatedAt;
-    @TableLogic(value = "0", delval = "1")
-    private Byte isDeleted;
+    @TableLogic(value = "null", delval = "now()")
+    private LocalDateTime deletedAt;
 
 }
