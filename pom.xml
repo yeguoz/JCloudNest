@@ -5,10 +5,10 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>3.4.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>icu.yeguo</groupId>
+	<groupId>icu.yeguo.cloudnest</groupId>
 	<artifactId>cloudnest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cloudnest</name>
@@ -32,9 +32,15 @@
 		<knife4j.xingfudeshi.version>4.6.0</knife4j.xingfudeshi.version>
 		<mybatis-plus.version>3.5.9</mybatis-plus.version>
 		<bcrypt.version>0.10.2</bcrypt.version>
+		<commons.pool2.version>2.11.1</commons.pool2.version>
 	</properties>
 
 	<dependencies>
+		<!--LocalDateTime 类型的数据没有被 Jackson 默认的 JSON 序列化机制所支持,使用该模块来支持-->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>at.favre.lib</groupId>
 			<artifactId>bcrypt</artifactId>
@@ -43,6 +49,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+		</dependency>
+		<!-- Apache Commons Pool2 (连接池支持) -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>${commons.pool2.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -94,10 +110,12 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
+							<version>1.18.36</version>
 						</path>
 						<path>
 							<groupId>org.springframework.boot</groupId>
 							<artifactId>spring-boot-configuration-processor</artifactId>
+							<version>3.4.1</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
