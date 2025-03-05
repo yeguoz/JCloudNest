@@ -15,9 +15,4 @@
             <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,user_id,file_id,
-        file_name,folder_id,created_at,
-        updated_at,deleted_at
-    </sql>
 </mapper>
