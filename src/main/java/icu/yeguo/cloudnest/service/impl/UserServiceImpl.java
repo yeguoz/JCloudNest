@@ -8,8 +8,10 @@ import icu.yeguo.cloudnest.exception.BusinessException;
 import icu.yeguo.cloudnest.mapper.UserMapper;
 import icu.yeguo.cloudnest.model.dto.UserLoginDTO;
 import icu.yeguo.cloudnest.model.dto.UserRegisterDTO;
+import icu.yeguo.cloudnest.model.entity.Folder;
 import icu.yeguo.cloudnest.model.entity.User;
 import icu.yeguo.cloudnest.model.vo.UserVO;
+import icu.yeguo.cloudnest.service.IFolderService;
 import icu.yeguo.cloudnest.service.ISettingService;
 import icu.yeguo.cloudnest.service.IUserService;
 import jakarta.servlet.http.HttpSession;
@@ -17,11 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static icu.yeguo.cloudnest.constant.CommonConstant.*;
 import static icu.yeguo.cloudnest.constant.SettingConstant.*;
 import static icu.yeguo.cloudnest.constant.UserConstant.*;
-import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static jakarta.servlet.http.HttpServletResponse.*;
 
 /**
  * @author yeguo
@@ -33,10 +36,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
     private ISettingService settingService;
+    @Autowired
+    private IFolderService folderService;
 
+    @Transactional
     @Override
     public UserVO createUser(HttpSession session, UserRegisterDTO userRegisterDTO, String captcha) {
         if (userRegisterDTO == null)
@@ -60,29 +65,28 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         Long count = userMapper.selectCount(new LambdaQueryWrapper<User>().eq(User::getEmail, email));
         if (count > 0)
             throw new BusinessException(SC_BAD_REQUEST, "该邮箱已被注册");
-        // 创建用户
+        // 创建用户 设置信息
         User user = new User();
-        // 用户组
         String groupId = settingService.getSettingValue(AUTH, REGISTER_GROUP);
-        user.setGroupId(Integer.parseInt(groupId));
-        // 设置用户名
-        user.setName(email.split("@")[0]);
-        // bcrypt加密
         String bcryptHashPwd = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        user.setGroupId(Integer.parseInt(groupId));
+        user.setName(email.split("@")[0]);
         user.setPassword(bcryptHashPwd);
-        // 设置邮箱
         user.setEmail(email);
-        // （0正常 1）
         user.setStatus((byte) NORMAL);
-        // avatar
         user.setAvatar("");
-        // 已使用存储
         user.setUsedStorage(0L);
 
         userMapper.insert(user);
         User currentUser = userMapper.selectById(user.getId());
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(currentUser, userVO);
+
+        // 向目录表插入一个根目录
+        Folder folder = new Folder();
+        folder.setUserId(user.getId());
+        folder.setName("/");
+        folderService.save(folder);
         return userVO;
     }
 
@@ -125,18 +129,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     private void checkVerificationCode(HttpSession session, String captcha, String captchaEnabled, String captchaType) {
+        if (!captchaEnabled.equals(TRUE))
+            return;
         if (captcha == null)
             throw new BusinessException(SC_BAD_REQUEST, "验证码不能为空");
         String captchaMaxAge = SESSION_CAPTCHA_LOGIN.equals(captchaType)
                 ? SESSION_CAPTCHA_LOGIN_MAX_AGE : SESSION_CAPTCHA_REGISTER_MAX_AGE;
-        log.debug("captchaEnabled: {},captcha:{} ", captchaEnabled, captcha);
-        if (captchaEnabled.equals(TRUE)) {
-            String sessionCaptcha = (String) session.getAttribute(captchaType);
-            long sessionCaptchaMaxAge = (long) session.getAttribute(captchaMaxAge);
-            if (sessionCaptcha == null || sessionCaptchaMaxAge < System.currentTimeMillis())
-                throw new BusinessException(SC_BAD_REQUEST, "验证码已过期");
-            if (!sessionCaptcha.equalsIgnoreCase(captcha))
-                throw new BusinessException(SC_BAD_REQUEST, "验证码错误");
-        }
+        String sessionCaptcha = (String) session.getAttribute(captchaType);
+        long sessionCaptchaMaxAge = (long) session.getAttribute(captchaMaxAge);
+        if (sessionCaptcha == null || sessionCaptchaMaxAge < System.currentTimeMillis())
+            throw new BusinessException(SC_BAD_REQUEST, "验证码已过期");
+        if (!sessionCaptcha.equalsIgnoreCase(captcha))
+            throw new BusinessException(SC_BAD_REQUEST, "验证码错误");
     }
 }
