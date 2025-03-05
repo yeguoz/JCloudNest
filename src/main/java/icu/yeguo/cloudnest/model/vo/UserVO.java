@@ -1,13 +1,11 @@
 package icu.yeguo.cloudnest.model.vo;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Schema(description = "用户信息")
 @Data
 public class UserVO implements Serializable {
     @Serial
