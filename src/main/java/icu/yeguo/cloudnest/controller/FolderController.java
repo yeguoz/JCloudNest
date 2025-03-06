@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @Tag(name = "目录Controller")
 @RestController
 @RequestMapping("/folder")
@@ -27,7 +29,7 @@ public class FolderController {
     @PostMapping
     public Response<Long> createFolder(HttpSession session,
                                        @RequestParam("path") String path,
-                                       @RequestParam("name") String name) {
+                                       @RequestParam("name") String name) throws IOException {
         if (path == null)
             throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "路径不能为空");
         Object object = session.getAttribute(UserConstant.USER_VO);
