@@ -8,7 +8,7 @@ import icu.yeguo.cloudnest.model.entity.Policy;
 * @createDate 2025-02-15 18:13:03
 */
 public interface PolicyMapper extends BaseMapper<Policy> {
-
+    Policy findPolicyByUserId(int userId);
 }
 
 
