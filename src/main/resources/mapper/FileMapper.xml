@@ -9,15 +9,9 @@
             <result property="size" column="size" jdbcType="BIGINT"/>
             <result property="fileHash" column="file_hash" jdbcType="VARCHAR"/>
             <result property="sourceName" column="source_name" jdbcType="VARCHAR"/>
-            <result property="policyId" column="policy_id" jdbcType="INTEGER"/>
             <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
             <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
             <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,size,file_hash,
-        source_name,policy_id,created_at,
-        updated_at,deleted_at
-    </sql>
 </mapper>
