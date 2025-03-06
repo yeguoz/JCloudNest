@@ -21,8 +21,6 @@ public class File implements Serializable {
     private String fileHash;
     @TableField(value = "source_name")
     private String sourceName;
-    @TableField(value = "policy_id")
-    private Integer policyId;
     @TableField(value = "created_at")
     private LocalDateTime createdAt;
     @TableField(value = "updated_at")
