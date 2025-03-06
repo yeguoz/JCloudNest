@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @Tag(name = "用户文件Controller")
 @RestController
 @RequestMapping("/userfile")
@@ -49,5 +51,30 @@ public class UserFileController {
 
         FileVO fileVO = userFileService.getUserFiles(userVO.getId(), path);
         return Response.success(fileVO);
+    }
+
+    @Operation(summary = "创建文件", parameters = {
+            @Parameter(name = "path", description = "路径", schema = @Schema(type = "String")),
+            @Parameter(name = "name", description = "文件名", schema = @Schema(type = "String"))
+    },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "成功", content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = Response.class)
+                    )
+                    )
+            })
+    @PostMapping
+    public Response<Long> createUserFile(HttpSession session,
+                                         @RequestParam("path") String path,
+                                         @RequestParam("name") String name) throws IOException {
+        if (path == null)
+            throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST,"路径不能为空");
+        Object object = session.getAttribute(UserConstant.USER_VO);
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        UserVO userVO = objectMapper.convertValue(object, UserVO.class);
+
+        Long id = userFileService.createUserFile(userVO.getId(), path,name);
+        return Response.success(id);
     }
 }
