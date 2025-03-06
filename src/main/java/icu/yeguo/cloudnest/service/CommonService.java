@@ -1,6 +1,7 @@
 package icu.yeguo.cloudnest.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import icu.yeguo.cloudnest.constant.CommonConstant;
 import icu.yeguo.cloudnest.mapper.FolderMapper;
 import icu.yeguo.cloudnest.model.entity.Folder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +15,16 @@ public class CommonService {
 
     public long findFolderId(int userId, String path) {
         String[] paths;
-        if ("/".equals(path)) {
+        if (CommonConstant.ROOT.equals(path)) {
             paths = new String[1];
         } else {
-            paths = path.split("/");
+            paths = path.split(CommonConstant.ROOT);
         }
-        paths[0] = "/";
+        paths[0] = CommonConstant.ROOT;
 
         long folderId = 0;
         for (String item : paths) {
-            if ("/".equals(item)) {
+            if (CommonConstant.ROOT.equals(item)) {
                 Folder folder = folderMapper.selectOne(new LambdaQueryWrapper<Folder>()
                         .eq(Folder::getUserId, userId)
                         .eq(Folder::getName, item)
