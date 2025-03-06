@@ -5,20 +5,23 @@
 <mapper namespace="icu.yeguo.cloudnest.mapper.PolicyMapper">
 
     <resultMap id="BaseResultMap" type="icu.yeguo.cloudnest.model.entity.Policy">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="type" column="type" jdbcType="VARCHAR"/>
-            <result property="publicDirNameRule" column="public_dir_name_rule" jdbcType="VARCHAR"/>
-            <result property="publicFileNameRule" column="public_file_name_rule" jdbcType="VARCHAR"/>
-            <result property="privateDirNameRule" column="private_dir_name_rule" jdbcType="VARCHAR"/>
-            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
-            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
-            <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="publicDirNameRule" column="public_dir_name_rule" jdbcType="VARCHAR"/>
+        <result property="publicFileNameRule" column="public_file_name_rule" jdbcType="VARCHAR"/>
+        <result property="privateDirNameRule" column="private_dir_name_rule" jdbcType="VARCHAR"/>
+        <result property="privateFileNameRule" column="private_file_name_rule" jdbcType="VARCHAR"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+        <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id,name,type,
-        public_dir_name_rule,public_file_name_rule,private_dir_name_rule,
-        created_at,updated_at,deleted_at
-    </sql>
+    <select id="findPolicyByUserId" resultType="icu.yeguo.cloudnest.model.entity.Policy" parameterType="int">
+        select *
+        from cn_policies p
+                 inner join cn_groups g on g.policy_id = p.id
+                 inner join cn_users u on u.group_id = g.id
+        where u.id = #{userId};
+    </select>
 </mapper>

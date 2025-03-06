@@ -29,6 +29,8 @@ public class Policy implements Serializable {
     private String publicFileNameRule;
     @TableField(value = "private_dir_name_rule")
     private String privateDirNameRule;
+    @TableField(value = "private_file_name_rule")
+    private String privateFileNameRule;
     @TableField(value = "created_at")
     private LocalDateTime createdAt;
     @TableField(value = "updated_at")
