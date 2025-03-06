@@ -29,11 +29,14 @@ public class FolderServiceImpl extends ServiceImpl<FolderMapper, Folder>
         long parentFolderId = commonService.findFolderId(userId, path);
         if (parentFolderId == 0)
             throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "父文件夹不存在");
-        // 不能有同名目录
-        Long count = folderMapper.selectCount(new LambdaQueryWrapper<Folder>().eq(Folder::getName, name));
+        // 不能有同名文件夹
+        Long count = folderMapper.selectCount(new LambdaQueryWrapper<Folder>()
+                .eq(Folder::getName, name)
+                .eq(Folder::getParentId, parentFolderId)
+        );
         if (count > 0)
             throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "存在同名文件夹");
-        // 创建目录
+        // 插入文件夹数据
         Folder folder = new Folder();
         folder.setUserId(userId);
         folder.setName(name);
