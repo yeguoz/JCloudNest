@@ -51,6 +51,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File>
         File file = new File();
         file.setSize(0L);
         file.setSourceName(sourceName);
+        file.setIsPublic(0);
+        file.setReferenceCount(1);
         // 插入数据
         int i = fileMapper.insert(file);
         if (i < 1)
