@@ -21,6 +21,10 @@ public class File implements Serializable {
     private String fileHash;
     @TableField(value = "source_name")
     private String sourceName;
+    @TableField(value = "is_public")
+    private Integer isPublic;
+    @TableField(value = "reference_count")
+    private Integer referenceCount;
     @TableField(value = "created_at")
     private LocalDateTime createdAt;
     @TableField(value = "updated_at")
