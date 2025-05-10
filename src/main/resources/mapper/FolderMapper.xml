@@ -14,4 +14,8 @@
         <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <delete id="removePhysicallyById" parameterType="java.lang.Long">
+        delete from cn_folders where id = #{id}
+    </delete>
+
 </mapper>

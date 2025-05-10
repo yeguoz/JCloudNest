@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface FolderMapper extends BaseMapper<Folder> {
 
+    Boolean removePhysicallyById(Long originFolderId);
 }
 
 
