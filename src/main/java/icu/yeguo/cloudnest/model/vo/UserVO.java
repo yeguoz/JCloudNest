@@ -1,5 +1,8 @@
 package icu.yeguo.cloudnest.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import icu.yeguo.cloudnest.model.entity.Group;
+import icu.yeguo.cloudnest.model.entity.Policy;
 import lombok.Data;
 
 import java.io.Serial;
@@ -17,6 +20,10 @@ public class UserVO implements Serializable {
     private Byte status;
     private String avatar;
     private Long usedStorage;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
+    private Group group;
+    private Policy policy;
 }
