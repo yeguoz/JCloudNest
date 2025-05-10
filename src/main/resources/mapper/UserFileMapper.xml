@@ -5,14 +5,35 @@
 <mapper namespace="icu.yeguo.cloudnest.mapper.UserFileMapper">
 
     <resultMap id="BaseResultMap" type="icu.yeguo.cloudnest.model.entity.UserFile">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="userId" column="user_id" jdbcType="INTEGER"/>
-            <result property="fileId" column="file_id" jdbcType="BIGINT"/>
-            <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
-            <result property="folderId" column="folder_id" jdbcType="BIGINT"/>
-            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
-            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
-            <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="fileId" column="file_id" jdbcType="BIGINT"/>
+        <result property="fileName" column="file_name" jdbcType="VARCHAR"/>
+        <result property="folderId" column="folder_id" jdbcType="BIGINT"/>
+        <result property="fileType" column="file_type" jdbcType="BIGINT"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+        <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <delete id="deleteUserFile" parameterType="map">
+        delete uf, f
+        from cn_user_files uf
+                 inner join cn_files f on uf.file_id = f.id
+        where f.id = #{fileId}
+          and uf.id = #{userFileId}
+          and uf.user_id = #{userId};
+    </delete>
+    <delete id="removePhysicallyById" parameterType="java.lang.Long">
+        delete
+        from cn_user_files
+        where id = #{id}
+    </delete>
+
+    <select id="getUserFilesByAdmin" resultType="icu.yeguo.cloudnest.model.vo.AdminUserFileVO">
+        select uf.id, u.id as user_id, uf.file_id, u.name as username, uf.file_name, uf.created_at
+        from cn_user_files uf
+                 inner join cn_users u on uf.user_id = u.id
+        where uf.deleted_at is null
+    </select>
 
 </mapper>

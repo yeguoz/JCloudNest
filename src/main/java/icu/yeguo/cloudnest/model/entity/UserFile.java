@@ -27,6 +27,8 @@ public class UserFile implements Serializable {
     private String fileName;
     @TableField(value = "folder_id")
     private Long folderId;
+    @TableField(value = "file_type")
+    private String fileType;
     @TableField(value = "created_at")
     private LocalDateTime createdAt;
     @TableField(value = "updated_at")
