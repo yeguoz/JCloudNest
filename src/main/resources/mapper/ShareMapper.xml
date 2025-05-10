@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="icu.yeguo.cloudnest.mapper.ShareMapper">
+
+    <resultMap id="BaseResultMap" type="icu.yeguo.cloudnest.model.entity.Share">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="sourceId" column="source_id" jdbcType="BIGINT"/>
+            <result property="userFileId" column="user_file_id" jdbcType="BIGINT"/>
+            <result property="shortId" column="short_id" jdbcType="VARCHAR"/>
+            <result property="sourceName" column="source_name" jdbcType="VARCHAR"/>
+            <result property="passwordEnabled" column="password_enabled" jdbcType="TINYINT"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="isDir" column="is_dir" jdbcType="TINYINT"/>
+            <result property="visitCount" column="visit_count" jdbcType="INTEGER"/>
+            <result property="remainingDownloads" column="remaining_downloads" jdbcType="INTEGER"/>
+            <result property="previewEnabled" column="preview_enabled" jdbcType="TINYINT"/>
+            <result property="expireTimeEnabled" column="expire_time_enabled" jdbcType="TINYINT"/>
+            <result property="expireTime" column="expire_time" jdbcType="TIMESTAMP"/>
+            <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+            <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+            <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+        <select id="getSharedFilesByAdmin" resultType="icu.yeguo.cloudnest.model.vo.AdminShareFileVO">
+            select s.id,
+                   u.id   as user_id,
+                   u.name as username,
+                   s.source_id,
+                   s.user_file_id,
+                   s.short_id,
+                   s.password_enabled,
+                   s.password,
+                   s.is_dir,
+                   s.visit_count,
+                   s.remaining_downloads,
+                   s.preview_enabled,
+                   s.expire_time_enabled,
+                   s.expire_time,
+                   s.created_at
+            from cn_shares s
+                     inner join cn_users u on s.user_id = u.id
+            where s.deleted_at is null
+        </select>
+
+</mapper>
