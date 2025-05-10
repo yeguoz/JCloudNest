@@ -1,5 +1,6 @@
 package icu.yeguo.cloudnest.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import static icu.yeguo.cloudnest.constant.CommonConstant.SUCCESS;
 import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 import static jakarta.servlet.http.HttpServletResponse.SC_OK;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
 @Data
 public class Response<T> implements Serializable {
@@ -28,6 +30,9 @@ public class Response<T> implements Serializable {
 
     public static <T> Response<T> success(T data) {
         return new Response<>(SC_OK, data, SUCCESS);
+    }
+    public static <T> Response<T> success(T data, String message) {
+        return new Response<>(SC_OK, data, message);
     }
 
     public static <T> Response<T> error(int code, String message) {
