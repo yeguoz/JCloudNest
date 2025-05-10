@@ -22,21 +22,16 @@ public class Group implements Serializable {
     private Integer id;
     @TableField(value = "name")
     private String name;
-    @TableField(value = "storage_policy")
-    private String storagePolicy;
+    @TableField(value = "policy_id")
+    private Integer policyId;
     @TableField(value = "max_storage")
     private Long maxStorage;
     @TableField(value = "share_enabled")
     private Byte shareEnabled;
-    @TableField(value = "web_dev_enabled")
-    private Byte webDevEnabled;
-    @TableField(value = "speed_limit")
-    private Integer speedLimit;
     @TableField(value = "created_at")
     private LocalDateTime createdAt;
     @TableField(value = "updated_at")
     private LocalDateTime updatedAt;
     @TableLogic(value = "null", delval = "now()")
     private LocalDateTime deletedAt;
-
 }

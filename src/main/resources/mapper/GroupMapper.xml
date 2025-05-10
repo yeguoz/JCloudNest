@@ -5,11 +5,9 @@
     <resultMap id="BaseResultMap" type="icu.yeguo.cloudnest.model.entity.Group">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="storagePolicy" column="storage_policy" jdbcType="VARCHAR"/>
+        <result property="policyId" column="policy_id" jdbcType="INTEGER"/>
         <result property="maxStorage" column="max_storage" jdbcType="BIGINT"/>
         <result property="shareEnabled" column="share_enabled" jdbcType="TINYINT"/>
-        <result property="webDevEnabled" column="web_dev_enabled" jdbcType="TINYINT"/>
-        <result property="speedLimit" column="speed_limit" jdbcType="INTEGER"/>
         <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
         <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
         <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
