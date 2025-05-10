@@ -19,10 +19,10 @@ public class File implements Serializable {
     private Long size;
     @TableField(value = "file_hash")
     private String fileHash;
+    @TableField(value = "header_hash")
+    private String headerHash;
     @TableField(value = "source_name")
     private String sourceName;
-    @TableField(value = "is_public")
-    private Integer isPublic;
     @TableField(value = "reference_count")
     private Integer referenceCount;
     @TableField(value = "created_at")
