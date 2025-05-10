@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 /**
@@ -23,16 +25,22 @@ public class Policy implements Serializable {
     private String name;
     @TableField(value = "type")
     private String type;
-    @TableField(value = "public_dir_name_rule")
-    private String publicDirNameRule;
-    @TableField(value = "public_file_name_rule")
-    private String publicFileNameRule;
-    @TableField(value = "private_dir_name_rule")
-    private String privateDirNameRule;
-    @TableField(value = "private_file_name_rule")
-    private String privateFileNameRule;
+    @TableField(value = "file_dir_name_rule")
+    private String fileDirNameRule;
+    @TableField(value = "avatar_file_name_rule")
+    private String avatarFileNameRule;
+    @TableField(value = "file_name_rule")
+    private String fileNameRule;
+    @TableField(value = "chunk_dir_name_rule")
+    private String chunkDirNameRule;
+    @TableField(value = "chunk_file_name_rule")
+    private String chunkFileNameRule;
+    @TableField(value = "empty_file_name_rule")
+    private String emptyFileNameRule;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "created_at")
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "updated_at")
     private LocalDateTime updatedAt;
     @TableLogic(value = "null", delval = "now()")
