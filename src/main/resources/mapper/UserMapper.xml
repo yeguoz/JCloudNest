@@ -15,5 +15,22 @@
         <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
         <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <select id="getUsersByAdmin" resultType="icu.yeguo.cloudnest.model.vo.AdminUserVO">
+        SELECT u.id,
+               u.name,
+               u.email,
+               g.id AS group_id,
+               g.name AS group_name,
+               g.policy_id,
+               u.status,
+               u.used_storage,
+               u.created_at
+        FROM cn_users u
+                 INNER JOIN
+             cn_groups g
+             ON
+                 u.group_id = g.id
+        where u.deleted_at is null
+    </select>
 
 </mapper>
