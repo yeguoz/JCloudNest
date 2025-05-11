@@ -12,7 +12,6 @@ public class CaptchaUtils {
     private static final int WIDTH = 150;
     private static final int HEIGHT = 50;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int CHAR_COUNT = 5;
 
     // 生成验证码并返回Base64编码字符串
     public static String generateCaptchaBase64(BufferedImage captchaImage) throws IOException {
