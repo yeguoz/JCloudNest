@@ -14,13 +14,13 @@ public class GlobalException {
 
     @ExceptionHandler(BusinessException.class)
     public Response<?> businessExceptionHandler(BusinessException e) {
-        log.error("业务异常-->{}类:{}",e.getClass(),e.getMessage());
+        log.error("业务异常-->{}类:{}:{}",e.getClass(),e.getMessage(),e.getStackTrace());
         return Response.error(e.getCode(),e.getMessage());
     }
 
     @ExceptionHandler(RuntimeException.class)
     public Response<?> runtimeExceptionHandler(RuntimeException e) {
-        log.error("运行时异常-->{}类:{}",e.getClass(),e.getMessage());
+        log.error("运行时异常-->{}类:{}:{}",e.getClass(),e.getMessage(),e.getStackTrace());
         return Response.error(e.getMessage());
     }
 }
