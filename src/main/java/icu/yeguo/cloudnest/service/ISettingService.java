@@ -2,6 +2,9 @@ package icu.yeguo.cloudnest.service;
 
 import icu.yeguo.cloudnest.model.entity.Setting;
 import com.baomidou.mybatisplus.extension.service.IService;
+import icu.yeguo.cloudnest.model.vo.SettingVO;
+
+import java.util.List;
 
 /**
  * @author yeguo
@@ -9,5 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @createDate 2025-01-03 22:15:40
  */
 public interface ISettingService extends IService<Setting> {
-    String getSettingValue(String name);
+    String getSettingValue(String type,String name);
+
+    List<SettingVO> getSettingByType(String type);
 }
