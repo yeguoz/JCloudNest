@@ -1,20 +1,21 @@
 package icu.yeguo.cloudnest.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import icu.yeguo.cloudnest.constant.CommonConstant;
 import icu.yeguo.cloudnest.exception.BusinessException;
 import icu.yeguo.cloudnest.model.entity.File;
-import icu.yeguo.cloudnest.model.entity.Policy;
+import icu.yeguo.cloudnest.model.vo.UserVO;
 import icu.yeguo.cloudnest.service.IFileService;
 import icu.yeguo.cloudnest.mapper.FileMapper;
-import icu.yeguo.cloudnest.service.IPolicyService;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.*;
+
+import static icu.yeguo.cloudnest.constant.PlaceholderConstant.*;
 
 /**
  * @author yeguo
@@ -25,51 +26,53 @@ import java.nio.file.*;
 public class FileServiceImpl extends ServiceImpl<FileMapper, File>
         implements IFileService {
 
-
-    @Autowired
+    @Resource
     private FileMapper fileMapper;
-    @Autowired
-    private IPolicyService policyService;
 
     @Override
-    public File createFile(int userId, String path, String name) throws IOException {
-        String UID = "{uid}";
-        String PATH = "{path}";
-        String TIMESTAMP = "{timestamp}";
-        String RANDOM5 = "{random5}";
-        String FILENAME = "{filename}";
-        Policy policy = policyService.findPolicyByUserId(userId);
-        String privateDirNameRule = policy.getPrivateDirNameRule();
-        String privateFileNameRule = policy.getPrivateFileNameRule();
-        String folderName = privateDirNameRule.replace(UID, String.valueOf(userId))
-                .replace(PATH, path.replaceFirst(CommonConstant.ROOT, CommonConstant.EMPTY));
-        String fileName = privateFileNameRule.replace(TIMESTAMP, String.valueOf(System.currentTimeMillis()))
-                .replace(RANDOM5, String.valueOf((int) (Math.random() * 90000) + 10000))
-                .replace(FILENAME, name);
-        String sourceName = folderName + CommonConstant.EMPTY + fileName;
+    public File createFile(UserVO userVO, String path, String filename) throws IOException {
+        String sourceName = userVO.getPolicy().getEmptyFileNameRule()
+                .replace(UID_PLACEHOLDER, String.valueOf(userVO.getId()))
+                .replace(UUID_PLACEHOLDER, IdUtil.simpleUUID())
+                .replace(FILENAME_PLACEHOLDER, filename);
+
+        // 创建物理文件
+        Path sourceNamePath = Paths.get(sourceName);
+        Path parentDir = sourceNamePath.getParent();
+        if (Files.exists(sourceNamePath)) {
+            throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "文件已存在");
+        }
+        if (parentDir != null) {
+            Files.createDirectories(parentDir);
+        }
+        Files.createFile(sourceNamePath);
+
 
         File file = new File();
         file.setSize(0L);
         file.setSourceName(sourceName);
-        file.setIsPublic(0);
         file.setReferenceCount(1);
         // 插入数据
         int i = fileMapper.insert(file);
-        if (i < 1)
+        if (i < 1) {
             throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "文件创建失败");
-        // 创建物理文件
-        Path folderPath = Paths.get(folderName);
-        Path sourceNamePath = Paths.get(sourceName);
-        if (Files.exists(sourceNamePath))
-            throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "文件已存在");
-        if (!Files.exists(folderPath)) {
-            Files.createDirectories(folderPath);
         }
-        Files.createFile(sourceNamePath);
         return file;
     }
+
+    @Override
+    public Boolean increaseReferenceCount(Long fileId) {
+        return this.lambdaUpdate()
+                .eq(File::getId, fileId)
+                .setSql("reference_count = reference_count + 1")
+                .update();
+    }
+
+    @Override
+    public Boolean decreaseReferenceCount(Long fileId) {
+        return this.lambdaUpdate()
+                .eq(File::getId, fileId)
+                .setSql("reference_count = reference_count - 1")
+                .update();
+    }
 }
-
-
-
-
