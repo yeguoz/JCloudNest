@@ -5,8 +5,8 @@ import icu.yeguo.cloudnest.exception.BusinessException;
 import icu.yeguo.cloudnest.model.entity.Policy;
 import icu.yeguo.cloudnest.service.IPolicyService;
 import icu.yeguo.cloudnest.mapper.PolicyMapper;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class PolicyServiceImpl extends ServiceImpl<PolicyMapper, Policy>
         implements IPolicyService {
 
-    @Autowired
+    @Resource
     private PolicyMapper policyMapper;
 
     @Override
@@ -29,7 +29,3 @@ public class PolicyServiceImpl extends ServiceImpl<PolicyMapper, Policy>
         return policy;
     }
 }
-
-
-
-
