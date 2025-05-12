@@ -143,19 +143,11 @@ public class AdminController {
     @UserAuth
     @PutMapping("/group")
     public Response<?> editGroup(@RequestParam("id") Integer id,
-                                 @RequestParam("groupName") String groupName,
                                  @RequestParam("policyId") Integer policyId,
                                  @RequestParam("maxStorage") Long maxStorage,
                                  @RequestParam("shareEnabled") Boolean shareEnabled) {
-        if (groupService.getById(id).getName().equals(groupName)) {
-            throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "组名已存在");
-        }
-        if (groupName.length() < 4 || groupName.length() > 10) {
-            throw new BusinessException(HttpServletResponse.SC_BAD_REQUEST, "组名长度不合法");
-        }
         groupService.lambdaUpdate()
                 .eq(Group::getId, id)
-                .set(Group::getName, groupName)
                 .set(Group::getPolicyId, policyId)
                 .set(Group::getMaxStorage, maxStorage)
                 .set(Group::getShareEnabled, shareEnabled ? (byte) 1 : (byte) 0)
