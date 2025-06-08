@@ -16,4 +16,6 @@ public interface IFileService extends IService<File> {
     Boolean increaseReferenceCount(Long fileId);
 
     Boolean decreaseReferenceCount(Long fileId);
+
+    Boolean deleteByIdPhysically(Long id);
 }

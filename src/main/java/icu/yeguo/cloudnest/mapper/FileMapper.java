@@ -2,6 +2,8 @@ package icu.yeguo.cloudnest.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import icu.yeguo.cloudnest.model.entity.File;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * @author yeguo
@@ -9,6 +11,8 @@ import icu.yeguo.cloudnest.model.entity.File;
 */
 public interface FileMapper extends BaseMapper<File> {
 
+    @Delete("DELETE FROM cn_files WHERE id = #{id}")
+    Boolean deleteByIdPhysically(@Param("id") Long id);
 }
 
 

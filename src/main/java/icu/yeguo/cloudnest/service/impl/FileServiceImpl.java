@@ -75,4 +75,9 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, File>
                 .setSql("reference_count = reference_count - 1")
                 .update();
     }
+
+    @Override
+    public Boolean deleteByIdPhysically(Long id) {
+        return fileMapper.deleteByIdPhysically(id);
+    }
 }
